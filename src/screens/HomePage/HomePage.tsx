@@ -1,9 +1,10 @@
-type Props = {}
 import { useState } from 'react'
 import { Input } from '../../components'
 import { QRCode } from '../../components/QRCode/QRCode'
 
-export const HomePage = (_props: Props) => {
+// type Props = {}
+
+export const HomePage = () => {
     const [value, setValue] = useState('')
 
     return (

@@ -1,5 +1,5 @@
-type Props = {}
+// type Props = {}
 
-export const Pos = (props: Props) => {
+export const Pos = () => {
     return <div>Pos</div>
 }
