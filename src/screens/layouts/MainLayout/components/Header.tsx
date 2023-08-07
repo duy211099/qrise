@@ -7,7 +7,7 @@ export const Header = (_props: Props) => {
     const navigate = useNavigate()
 
     return (
-        <div>
+        <div className="flex gap-4 bg-slate-600 p-4 text-white">
             <div
                 className="cursor-pointer"
                 onClick={() => {
