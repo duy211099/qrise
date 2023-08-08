@@ -1,45 +1,59 @@
 import { useEffect, useState } from 'react'
-import { Input } from '../../components'
+import { FormControl, FormHelperText, FormLabel, Input } from '../../components'
 import { QRCode } from '../../components/QRCode/QRCode'
-import { createClient } from '@supabase/supabase-js'
-import { Database } from '../../../database.types'
-
-const supabase = createClient<Database>(
-    import.meta.env.SUPABASE_URL ?? '',
-    import.meta.env.SUPABASE_ANON_KEY ?? '',
-)
+import { Tables, supabase } from '../../lib/supabase'
+import { useForm } from 'react-hook-form'
 
 export const HomePage = () => {
     const [value, setValue] = useState('')
+    const {
+        register,
+        handleSubmit,
+        watch,
+        formState: { errors },
+    } = useForm()
+    const onSubmit = (data) => console.log(data)
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const [countries, setCountries] = useState<any>([])
+    console.log('duy watch', errors, watch('input')) // watch input value by passing the name of it
+
+    const [todoList, setTodoList] = useState<Tables<'todos'>[] | null>(null)
 
     useEffect(() => {
-        getCountries()
+        getTodoList()
     }, [])
 
-    async function getCountries() {
+    async function getTodoList() {
         const { data } = await supabase.from('todos').select()
-        setCountries(data)
+
+        setTodoList(data)
     }
 
     return (
         <div className="min-h-screen bg-slate-600 p-4">
-            <ul>
-                {countries.map((country) => (
-                    <li key={country.id}>{country.task}</li>
+            <FormControl onSubmit={handleSubmit(onSubmit)}>
+                <FormLabel>Email</FormLabel>
+                <Input
+                    placeholder="Enter your email"
+                    defaultValue=""
+                    {...register('input', { required: true })}
+                    error={!!errors.input}
+                />
+                {errors.input && (
+                    <FormHelperText className="text-red-600">
+                        This is an error message.
+                    </FormHelperText>
+                )}
+            </FormControl>
+            <ul className="space-y-2 py-4">
+                {todoList?.map((country) => (
+                    <li
+                        className="rounded-md bg-blue-800 p-4 text-white"
+                        key={country.id}
+                    >
+                        {country.task}
+                    </li>
                 ))}
             </ul>
-            <Input
-                onChange={(e) => {
-                    setValue(e.target.value)
-                }}
-                value={value}
-            />
-            <div className="flex justify-center p-4">
-                <QRCode value={value} />
-            </div>
         </div>
     )
 }

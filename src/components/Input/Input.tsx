@@ -1,6 +1,8 @@
 import * as React from 'react'
 import { tv } from 'tailwind-variants'
+import { forwardRef } from 'react'
 import { cn } from '../../utils'
+import FormControlContext from '../Form/FormControlContext'
 
 const styles = tv({
     slots: {
@@ -70,68 +72,63 @@ export interface InputProps
     endDecoratorClassName?: string
 }
 
-export const Input = React.forwardRef<HTMLInputElement, InputProps>(
-    (props, ref) => {
-        const {
-            wrapperClassName,
-            startDecorator,
-            startDecoratorClassName,
-            endDecorator,
-            endDecoratorClassName,
-            fullWidth = true,
-            error: errorProps,
-            disabled: disabledProps,
-            className,
-            ...rest
-        } = props
+export const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
+    const {
+        wrapperClassName,
+        startDecorator,
+        startDecoratorClassName,
+        endDecorator,
+        endDecoratorClassName,
+        fullWidth = true,
+        error: errorProps,
+        disabled: disabledProps,
+        className,
+        ...rest
+    } = props
 
-        const error = errorProps
-        const disabled = disabledProps
+    const formContext = React.useContext(FormControlContext)
+    const error = errorProps ?? formContext?.error
+    const disabled = disabledProps ?? formContext?.disabled
 
-        // const formContext = React.useContext(FormControlContext)
-        // const error = errorProps ?? formContext?.error
-        // const disabled = disabledProps ?? formContext?.disabled
+    const baseStyles = styles({
+        hasLeft: !!startDecorator,
+        hasRight: !!endDecorator,
+        fullWidth,
+        error,
+        disabled,
+    })
 
-        const baseStyles = styles({
-            hasLeft: !!startDecorator,
-            hasRight: !!endDecorator,
-            fullWidth,
-            error,
-            disabled,
-        })
-
-        const child = (
-            <input
-                ref={ref}
-                className={cn(baseStyles.input(), className)}
-                disabled={disabled}
-                {...rest}
-            />
+    const child = (
+        <input
+            className={cn(baseStyles.input(), className)}
+            ref={ref}
+            disabled={disabled}
+            {...rest}
+        />
+    )
+    if (startDecorator || endDecorator) {
+        return (
+            <div className={cn('relative', wrapperClassName)}>
+                <span
+                    className={cn(
+                        baseStyles.startDecorator(),
+                        startDecoratorClassName,
+                    )}
+                >
+                    {startDecorator}
+                </span>
+                {child}
+                <span
+                    className={cn(
+                        baseStyles.endDecorator(),
+                        endDecoratorClassName,
+                    )}
+                >
+                    {endDecorator}
+                </span>
+            </div>
         )
-        if (startDecorator || endDecorator) {
-            return (
-                <div className={cn('relative', wrapperClassName)}>
-                    <span
-                        className={cn(
-                            baseStyles.startDecorator(),
-                            startDecoratorClassName,
-                        )}
-                    >
-                        {startDecorator}
-                    </span>
-                    {child}
-                    <span
-                        className={cn(
-                            baseStyles.endDecorator(),
-                            endDecoratorClassName,
-                        )}
-                    >
-                        {endDecorator}
-                    </span>
-                </div>
-            )
-        }
+    }
 
-        return child
-    },
-)
+    return child
+})
