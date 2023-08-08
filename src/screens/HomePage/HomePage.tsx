@@ -11,7 +11,6 @@ import { useForm } from 'react-hook-form'
 import { User } from 'lucide-react'
 
 export const HomePage = () => {
-    let a
     const {
         register,
         handleSubmit,
