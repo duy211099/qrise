@@ -7,7 +7,7 @@ export const Header = () => {
     const navigate = useNavigate()
 
     return (
-        <div className="flex gap-4 p-4 text-white">
+        <div className="flex gap-4 p-4">
             <div
                 className="cursor-pointer"
                 onClick={() => {

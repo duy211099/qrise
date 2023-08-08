@@ -10,10 +10,7 @@ import { Tables, supabase } from '../../lib/supabase'
 import { useForm } from 'react-hook-form'
 import { User } from 'lucide-react'
 
-type Props = {}
-
 export const HomePage = () => {
-    let a
     const {
         register,
         handleSubmit,

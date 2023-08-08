@@ -1,4 +1,4 @@
-import React, { useEffect, useId, useRef } from 'react'
+import React, { useCallback, useEffect, useId, useRef } from 'react'
 import qrcode, { QRCodeToDataURLOptions } from 'qrcode'
 
 interface IProps extends React.CanvasHTMLAttributes<HTMLCanvasElement> {
@@ -17,7 +17,7 @@ export const QRCode = ({
     const id = useId()
     const ref = useRef<HTMLCanvasElement>(null)
 
-    const generateQRCode = () => {
+    const generateQRCode = useCallback(() => {
         if (value) {
             ref?.current &&
                 qrcode.toCanvas(ref!.current, value, option, function (error) {
@@ -31,11 +31,11 @@ export const QRCode = ({
                 context?.clearRect(0, 0, canvas.width, canvas.height)
             }
         }
-    }
+    }, [option, value])
 
     useEffect(() => {
         generateQRCode()
-    }, [value])
+    }, [generateQRCode, value])
 
     return <canvas id={`qr-code-${id}`} ref={ref} {...props}></canvas>
 }
