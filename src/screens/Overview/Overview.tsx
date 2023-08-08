@@ -8,7 +8,7 @@ export const Overview = () => {
     const [value, setValue] = useState('')
 
     return (
-        <div className="min-h-screen bg-slate-600 p-4">
+        <div className="min-h-screen p-4">
             <Input
                 onChange={(e) => {
                     setValue(e.target.value)

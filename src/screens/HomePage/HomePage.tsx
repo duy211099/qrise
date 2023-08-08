@@ -1,11 +1,16 @@
 import { useEffect, useState } from 'react'
-import { FormControl, FormHelperText, FormLabel, Input } from '../../components'
-import { QRCode } from '../../components/QRCode/QRCode'
+import {
+    Button,
+    FormControl,
+    FormHelperText,
+    FormLabel,
+    Input,
+} from '../../components'
 import { Tables, supabase } from '../../lib/supabase'
 import { useForm } from 'react-hook-form'
+import { User } from 'lucide-react'
 
 export const HomePage = () => {
-    const [value, setValue] = useState('')
     const {
         register,
         handleSubmit,
@@ -29,21 +34,26 @@ export const HomePage = () => {
     }
 
     return (
-        <div className="min-h-screen bg-slate-600 p-4">
-            <FormControl onSubmit={handleSubmit(onSubmit)}>
-                <FormLabel>Email</FormLabel>
-                <Input
-                    placeholder="Enter your email"
-                    defaultValue=""
-                    {...register('input', { required: true })}
-                    error={!!errors.input}
-                />
-                {errors.input && (
-                    <FormHelperText className="text-red-600">
-                        This is an error message.
-                    </FormHelperText>
-                )}
-            </FormControl>
+        <div className="min-h-screen p-4">
+            <form className="space-y-2" onSubmit={handleSubmit(onSubmit)}>
+                <FormControl className="w-full" error={!!errors.input}>
+                    <FormLabel>Email</FormLabel>
+                    <Input
+                        startDecorator={<User />}
+                        placeholder="Enter your email"
+                        defaultValue=""
+                        {...register('input', { required: true })}
+                    />
+                    {errors.input && (
+                        <FormHelperText className="text-red-600">
+                            This is an error message.
+                        </FormHelperText>
+                    )}
+                </FormControl>
+                <div>
+                    <Button type="submit">Submit</Button>
+                </div>
+            </form>
             <ul className="space-y-2 py-4">
                 {todoList?.map((country) => (
                     <li

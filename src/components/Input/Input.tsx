@@ -37,13 +37,13 @@ const styles = tv({
         error: {
             true: {
                 input: [
-                    'border-error-500',
-                    'hover:border-error-500',
-                    'focus:border-error-500 focus:ring-error-500',
+                    'border-red-500',
+                    'hover:border-red-500',
+                    'focus:border-red-500 focus:ring-red-500',
                     'placeholder:text-red-500',
                 ],
-                startDecorator: 'text-error-300',
-                endDecorator: 'text-error-300',
+                startDecorator: 'text-red-300',
+                endDecorator: 'text-red-300',
             },
         },
         disabled: {
