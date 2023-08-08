@@ -1,7 +1,7 @@
 import React, { useEffect, useId, useRef } from 'react'
 import qrcode, { QRCodeToDataURLOptions } from 'qrcode'
 
-interface IProps extends React.InputHTMLAttributes<HTMLCanvasElement> {
+interface IProps extends React.CanvasHTMLAttributes<HTMLCanvasElement> {
     value?: string
     option?: QRCodeToDataURLOptions
 }
